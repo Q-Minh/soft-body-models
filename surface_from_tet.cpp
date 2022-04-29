@@ -35,7 +35,9 @@ int main(int argc, char **argv)
     Eigen::MatrixXi T, F;
     igl::readMESH(input.string(), V, T, F);
     F = igl::boundary_facets<Eigen::MatrixXi, Eigen::MatrixXi>(T);
-    F.rowwise().reverseInPlace();
+    Eigen::PermutationMatrix<3> P{};
+    P.indices() = {0, 2, 1};
+    F = F * P;
 
     std::filesystem::path const path_to_output = argv[2];
     std::string const output_file_type = argv[3];
