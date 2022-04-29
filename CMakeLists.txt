@@ -54,3 +54,4 @@ create_program(
     "convert-triangle-mesh-format" 
     "convert_triangle_mesh_format.cpp"
 )
+create_program("check-tet-mesh-hierarchy" "check-tet-mesh-hierarchy" "check_tet_mesh_hierarchy.cpp")

@@ -173,7 +173,6 @@ int main(int argc, char** argv)
     Eigen::MatrixXd V;
     Eigen::MatrixXi T, F;
     igl::readMESH(input.string(), V, T, F);
-    T = T.rowwise().reverse().eval();
     F = igl::boundary_facets<Eigen::MatrixXi, Eigen::MatrixXi>(T);
     std::vector<int> const unreferencedV = unreferenced_vertices(V, F);
     std::tie(V, F)                       = remove_unreferenced_vertices(V, F, unreferencedV);
