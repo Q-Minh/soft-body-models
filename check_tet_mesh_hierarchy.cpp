@@ -37,6 +37,7 @@ int main(int argc, char** argv)
     auto it      = hierarchy.begin();
     auto next    = ++hierarchy.begin();
     auto end     = hierarchy.end();
+    bool success = true;
     for (; next != end; ++it, ++next)
     {
         Eigen::MatrixXd const& Vfine = it->first;
@@ -53,11 +54,12 @@ int main(int argc, char** argv)
         {
             auto const i = std::distance(begin, it);
             std::cout << "Mesh " << i << " not entirely contained in mesh " << i + 1 << "\n";
-            return 0;
+            success = false;
         }
     }
 
-    std::cout << "All fine layers contained in coarse layers\n";
+    if (success)
+        std::cout << "All fine layers contained in coarse layers\n";
 
     return 0;
 }
