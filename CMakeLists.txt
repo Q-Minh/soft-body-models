@@ -28,17 +28,29 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(_libigl)
 
-add_executable(surface-from-tet)
-set_target_properties(surface-from-tet PROPERTIES FOLDER surface-from-tet)
-target_compile_features(surface-from-tet PRIVATE cxx_std_17)
+function (create_program _exec_name _folder _sources)
+    add_executable(${_exec_name})
+    set_target_properties(${_exec_name} PROPERTIES FOLDER ${_exec_name})
+    target_compile_features(${_exec_name} PRIVATE cxx_std_17)
 
-target_sources(surface-from-tet
-PRIVATE
-    # source files
-    surface_from_tet.cpp
-)
+    target_sources(${_exec_name}
+    PRIVATE
+        # source files
+        ${_sources}
+    )
 
-target_link_libraries(surface-from-tet 
-PRIVATE 
-    igl::core 
+    target_link_libraries(${_exec_name} 
+    PRIVATE 
+        igl::core 
+        igl::cgal 
+        igl::tetgen
+    )    
+endfunction()
+
+create_program("surface-from-tet" "surface-from-tet" "surface_from_tet.cpp")
+create_program("check-mesh" "check-mesh" "check_mesh.cpp")
+create_program(
+    "convert-triangle-mesh-format" 
+    "convert-triangle-mesh-format" 
+    "convert_triangle_mesh_format.cpp"
 )

@@ -1,6 +1,3 @@
 [submodule "vcpkg"]
 	path = vcpkg
 	url = https://github.com/microsoft/vcpkg
-[submodule "TetWild"]
-	path = TetWild
-	url = https://github.com/Yixin-Hu/TetWild
