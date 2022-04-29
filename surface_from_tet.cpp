@@ -15,7 +15,7 @@
 
 bool verify_tet_mesh_topology(Eigen::MatrixXi const& T)
 {
-    using face_type = std::array<unsigned int, 3u>;
+    using face_type = std::array<int, 3u>;
 
     auto const less = [](face_type const& f1, face_type const& f2) {
         face_type f1_ = f1;
@@ -51,7 +51,7 @@ bool verify_tet_mesh_topology(Eigen::MatrixXi const& T)
 
 bool verify_surface(Eigen::MatrixXi const& F)
 {
-    using edge_type = std::array<unsigned int, 2u>;
+    using edge_type = std::array<int, 2u>;
 
     auto const less = [](edge_type const& e1, edge_type const& e2) {
         edge_type e1_ = e1;
