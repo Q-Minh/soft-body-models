@@ -3,6 +3,8 @@ project(sbm VERSION 0.0.1 LANGUAGES CXX)
 
 set_property(GLOBAL PROPERTY USE_FOLDER ON)
 
+option(SBM_WITH_OPENGL "Link targets with OpenGL" OFF)
+
 include(FetchContent)
 
 set(LIBIGL_USE_STATIC_LIBRARY     OFF CACHE STRING   "Use libigl as static library" )
@@ -18,9 +20,15 @@ set(LIBIGL_WITH_TRIANGLE          OFF CACHE INTERNAL "Use Triangle"             
 set(LIBIGL_WITH_PREDICATES        OFF CACHE INTERNAL "Use exact predicates"         )
 set(LIBIGL_WITH_XML               OFF CACHE INTERNAL "Use XML"                      )
 set(LIBIGL_WITHOUT_COPYLEFT       OFF CACHE INTERNAL "Disable Copyleft libraries"   )
-set(LIBIGL_WITH_OPENGL            ON  CACHE INTERNAL "download libigl with opengl"  )
-set(LIBIGL_WITH_OPENGL_GLFW       ON  CACHE INTERNAL "download libigl with glfw"    )
-set(LIBIGL_WITH_OPENGL_GLFW_IMGUI ON  CACHE INTERNAL "download libigl with imgui"   )
+if (SBM_WITH_OPENGL)
+    set(LIBIGL_WITH_OPENGL            ON  CACHE INTERNAL "download libigl with opengl"  )
+    set(LIBIGL_WITH_OPENGL_GLFW       ON  CACHE INTERNAL "download libigl with glfw"    )
+    set(LIBIGL_WITH_OPENGL_GLFW_IMGUI ON  CACHE INTERNAL "download libigl with imgui"   )
+else() 
+    set(LIBIGL_WITH_OPENGL            OFF CACHE INTERNAL "download libigl with opengl"  )
+    set(LIBIGL_WITH_OPENGL_GLFW       OFF CACHE INTERNAL "download libigl with glfw"    )
+    set(LIBIGL_WITH_OPENGL_GLFW_IMGUI OFF CACHE INTERNAL "download libigl with imgui"   )
+endif()
 FetchContent_Declare(
   _libigl
   GIT_REPOSITORY https://github.com/libigl/libigl
@@ -44,8 +52,10 @@ function (create_program _exec_name _folder _sources)
         igl::core 
         igl::cgal 
         igl::tetgen
-        igl::opengl_glfw_imgui
     )
+    if (SBM_WITH_OPENGL)
+        target_link_libraries(${_exec_name} PRIVATE igl::opengl_glfw_imgui)
+    endif()
 endfunction()
 
 create_program("surface-from-tet" "surface-from-tet" "surface_from_tet.cpp")
@@ -56,4 +66,7 @@ create_program(
     "convert_triangle_mesh_format.cpp"
 )
 create_program("check-tet-mesh-hierarchy" "check-tet-mesh-hierarchy" "check_tet_mesh_hierarchy.cpp")
-create_program("tet-mesh-viewer" "tet-mesh-viewer" "tet_mesh_viewer.cpp")
+
+if (SBM_WITH_OPENGL)
+    create_program("tet-mesh-viewer" "tet-mesh-viewer" "tet_mesh_viewer.cpp")
+endif()
