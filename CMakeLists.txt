@@ -66,6 +66,7 @@ create_program(
     "convert_triangle_mesh_format.cpp"
 )
 create_program("check-tet-mesh-hierarchy" "check-tet-mesh-hierarchy" "check_tet_mesh_hierarchy.cpp")
+create_program("tetgen-tetrahedralize" "tetgen-tetrahedralize" "tetgen_tetrahedralize.cpp")
 
 if (SBM_WITH_OPENGL)
     create_program("tet-mesh-viewer" "tet-mesh-viewer" "tet_mesh_viewer.cpp")
