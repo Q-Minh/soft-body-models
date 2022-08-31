@@ -47,6 +47,8 @@ int main(int argc, char** argv)
                 Eigen::MatrixXi T, F;
                 if (igl::readMESH(mesh.string(), V, T, F))
                 {
+                    V.rowwise() -= V.colwise().mean();
+                    V /= (V.maxCoeff() - V.minCoeff());
                     igl::boundary_facets(T, F);
                     F = F.rowwise().reverse().eval();
                     hierarchy.push_back(TetMesh(V, T, F));
